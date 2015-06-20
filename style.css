@@ -1,0 +1,60 @@
+#blue {
+	height: 80%;
+	width: 60%;
+	background-color: rgba(0,0,255,.5);
+	border-radius: 100%;
+	position: absolute;
+	left: 50px;
+	top: 100px;
+}
+
+#red {
+	height: 80%;
+	width: 60%;
+	background-color: rgba(255,0,0,.5);
+	float: right;
+	border-radius: 100%;
+	position: absolute;
+	right: 50px;
+	top: 100px;
+}
+
+#add-btn {
+	position: absolute;
+	bottom: 50px;
+	left: 50px;
+	height: 50px;
+	width: 250px;
+	font-size: 30px;
+}
+#thing-stage {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#new-thing-text {
+    height: 100%;
+    width: 100%;
+    border: 0;
+    font-size: 30px;
+}
+#dark-overlay {
+    transition: visibility 300ms;
+    -webkit-transition: visibility 300ms;
+
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.5);
+    visibility: hidden;
+}
+.things {
+	position: absolute;
+	height: 50px;
+	min-width: 300px;
+    max-width: 600px;
+    width: auto;
+	border: thick dashed orange;
+}
