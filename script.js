@@ -1,79 +1,92 @@
-var blue = document.getElementById('blue'),
-red = document.getElementById('red'),
-addBtn = document.getElementById('add-btn'),
-thingStage = document.getElementById('thing-stage'),
-darkOverlay = document.getElementById('dark-overlay'),
-things = [],
-editMode = false;
 
-function init() {
 
-    addBtn.addEventListener('click',addBtnClicked);
+function VennDiagram() {
+
+    this.blue = document.getElementById('blue');
+    this.red = document.getElementById('red');
+    this.addBtn = document.getElementById('add-btn');
+    this.thingStage = document.getElementById('thing-stage');
+    this.darkOverlay = document.getElementById('dark-overlay');
+    this.things = [];
+    this.editMode = false;
+
+    console.log(this.addBtn);
 
 }
 
-function addBtnClicked() {
+VennDiagram.prototype = {
 
-    console.log('editMode',editMode);
+    init: function () {
+        this.addBtn.addEventListener('click',this.addBtnClicked.bind(this));
+    },
 
-	if (editMode) {
-		return;
-	} else {
-		editMode = true;
-		addBtn.disabled = 'true';
-        addBtn.removeEventListener('click',addBtnClicked);
-	}
+    addBtnClicked: function() {
 
-    console.log('got here');
+        console.log('addBtnClicked',this.addBtn);
 
-    darkOverlay.style.visibility = 'visible';
+        if (this.editMode) {
+            return;
+        } else {
+            this.editMode = true;
+            this.addBtn.disabled = 'true';
+            this.addBtn.removeEventListener('click',this.addBtnClicked.bind(this));
+        }
 
-	var newThing = document.createElement('div'),
-	newThingText = document.createElement('input'),
-	frag = document.createDocumentFragment();
+        this.darkOverlay.style.visibility = 'visible';
 
-	newThing.className = 'things';
-	newThing.id = 'new-thing';
-	newThing.style.bottom = '50px';
-	newThing.style.left = '500px';
+        var newThing = document.createElement('div'),
+            newThingText = document.createElement('input'),
+            frag = document.createDocumentFragment();
 
-    newThingText.id = 'new-thing-text';
-	newThingText.value = '';
-    newThingText.placeholder = "Type then press enter...";
-	
-	newThing.appendChild(newThingText);
-	frag.appendChild(newThing);
-	thingStage.appendChild(frag);
+        newThing.className = 'things';
+        newThing.id = 'new-thing';
+        newThing.style.bottom = '50px';
+        newThing.style.left = '500px';
 
-	newThingText.select();
+        newThingText.id = 'new-thing-text';
+        newThingText.value = '';
+        newThingText.placeholder = "Type then press enter...";
 
-    window.addEventListener('keypress',saveNewThing);
-}
+        newThing.appendChild(newThingText);
+        frag.appendChild(newThing);
+        this.thingStage.appendChild(frag);
 
-function saveNewThing(e) {
+        newThingText.select();
 
-    if (e.keyCode != 13) return;
+        window.addEventListener('keypress',this.saveNewThing.bind(this));
 
-    window.removeEventListener('keypress',saveNewThing);
+    },
 
-    var newThingText = document.getElementById('new-thing-text'),
-        newThing = document.getElementById('new-thing');
+    saveNewThing: function(e) {
 
-    if (newThingText.value.length > 0) {
-        newThing.innerHTML = newThingText.value;
-        newThing.id = 'thing'+things.length;
+        console.log('saveNewThing',e);
 
-        things.push(newThing);
-    } else {
-        newThing.parentNode.removeChild(newThing);
+        if (e.keyCode != 13) return;
+
+        window.removeEventListener('keypress',this.saveNewThing.bind(this));
+
+        var newThingText = document.getElementById('new-thing-text'),
+            newThing = document.getElementById('new-thing');
+
+        console.log(newThingText.value);
+        if (newThingText.value != '') {
+            newThing.innerHTML = newThingText.value;
+            newThing.id = 'thing'+this.things.length;
+
+            this.things.push(newThing);
+        } else {
+            newThing.parentNode.removeChild(newThing);
+        }
+
+        this.darkOverlay.style.visibility = 'hidden';
+        this.addBtn.disabled = '';
+        this.editMode = false;
+
+        this.addBtn.addEventListener('click',this.addBtnClicked.bind(this));
+
     }
 
-    darkOverlay.style.visibility = 'hidden';
-    addBtn.disabled = '';
-    editMode = false;
+};
 
-    addBtn.addEventListener('click',addBtnClicked);
-
-}
-
-init();
+var venn = new VennDiagram();
+venn.init();
