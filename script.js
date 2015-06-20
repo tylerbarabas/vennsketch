@@ -6,24 +6,34 @@ darkOverlay = document.getElementById('dark-overlay'),
 things = [],
 editMode = false;
 
+function init() {
+
+    addBtn.addEventListener('click',addBtnClicked);
+
+}
+
 function addBtnClicked() {
+
+    console.log('editMode',editMode);
 
 	if (editMode) {
 		return;
 	} else {
 		editMode = true;
 		addBtn.disabled = 'true';
+        addBtn.removeEventListener('click',addBtnClicked);
 	}
+
+    console.log('got here');
 
     darkOverlay.style.visibility = 'visible';
 
-	var newIndex = things.length,
-	newThing = document.createElement('div'),
+	var newThing = document.createElement('div'),
 	newThingText = document.createElement('input'),
 	frag = document.createDocumentFragment();
 
 	newThing.className = 'things';
-	newThing.id = 'thing'+newIndex;
+	newThing.id = 'new-thing';
 	newThing.style.bottom = '50px';
 	newThing.style.left = '500px';
 
@@ -34,9 +44,36 @@ function addBtnClicked() {
 	newThing.appendChild(newThingText);
 	frag.appendChild(newThing);
 	thingStage.appendChild(frag);
-	things.push(newThing);
 
 	newThingText.select();
+
+    window.addEventListener('keypress',saveNewThing);
 }
 
-addBtn.addEventListener('click',addBtnClicked);
+function saveNewThing(e) {
+
+    if (e.keyCode != 13) return;
+
+    window.removeEventListener('keypress',saveNewThing);
+
+    var newThingText = document.getElementById('new-thing-text'),
+        newThing = document.getElementById('new-thing');
+
+    if (newThingText.value.length > 0) {
+        newThing.innerHTML = newThingText.value;
+        newThing.id = 'thing'+things.length;
+
+        things.push(newThing);
+    } else {
+        newThing.parentNode.removeChild(newThing);
+    }
+
+    darkOverlay.style.visibility = 'hidden';
+    addBtn.disabled = '';
+    editMode = false;
+
+    addBtn.addEventListener('click',addBtnClicked);
+
+}
+
+init();

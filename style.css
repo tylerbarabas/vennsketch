@@ -41,9 +41,6 @@
     font-size: 30px;
 }
 #dark-overlay {
-    transition: visibility 300ms;
-    -webkit-transition: visibility 300ms;
-
     position: absolute;
     height: 100%;
     width: 100%;
@@ -57,4 +54,5 @@
     max-width: 600px;
     width: auto;
 	border: thick dashed orange;
+    font-size: 30px;
 }
